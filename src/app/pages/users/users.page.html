@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Usuarios activos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content pullingText="Desliza para actualizar"></ion-refresher-content>
+  </ion-refresher>
+
+  <p>Ejemplo de Ionic + Angular consumiendo una API REST.</p>
+
+  @if (loading) {
+    <div class="status">
+      <ion-spinner name="crescent" />
+      <p>Cargando usuarios…</p>
+    </div>
+  } @else if (errorMessage) {
+    <ion-text color="danger"><p>{{ errorMessage }}</p></ion-text>
+    <ion-button expand="block" (click)="loadUsers()">Reintentar</ion-button>
+  } @else if (users.length === 0) {
+    <ion-text color="medium"><p>No hay usuarios activos.</p></ion-text>
+  } @else {
+    <ion-list>
+      @for (user of users; track user.id) {
+        <ion-item>
+          <ion-label>
+            <h2>{{ user.name }}</h2>
+            <p>{{ user.email }}</p>
+            <p class="active-label">Estado: activo</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+    <p class="count">Usuarios mostrados: {{ users.length }}</p>
+  }
+
+  <ion-button expand="block" fill="outline" (click)="loadUsers()">
+    Actualizar lista
+  </ion-button>
+</ion-content>
